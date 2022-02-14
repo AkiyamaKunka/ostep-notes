@@ -4,7 +4,7 @@ Author: Akiyama
 
 Create : 13 Feb 2022
 
-Update: 13 Feb 2022
+Update: 14 Feb 2022
 
 ## Process need go over
 
@@ -69,3 +69,44 @@ __Unfairness Metric : __ $ U =  Time_{A} / Time_{B}$ , where $ U = 1 $ will get 
 * Introduced Weighting to calculate __vruntime__
 * Use RB-Tree to store running processes
 
+
+
+## Virtual Memory
+
+### Principles
+
+* __Isolation__: even some kernal are divided into serveral __microkernal__
+* __Transparency__: cannot be deteceted from process that its memory adrdress is virtual
+* __Efficiency__: on time and space
+
+### Fun Fact
+
+Any address A programmer can print out is a __virtual address__
+
+Allocation and deallocation is implicitly managed by compiler
+
+### The `malloc()` Call
+
+`````c
+#include <stdlib.h>
+...
+void *malloc(size_t size);
+`````
+
+`sizeof()` is a _compile-time_ operator, meaning that the actual size is know at _compile time_
+
+Think it as an operator, but not a function call(which would take place at _run time_.
+
+To allocate space for a double-precision floating point value, you simply do this: 
+
+``` c
+double *d = (double *) malloc(sizeof(double));
+```
+
+Another place to be careful is with strings. When declaring space for a string, use the following:
+
+```c
+malloc(strlen(s) + 1) //adds 1 to it in order to make room for the end-of-string character
+```
+
+It returns a `void *p` , then the programmer do the __cast__  to tell the _compiler_ to do the right thing
