@@ -187,15 +187,16 @@ Code, stack and heap size are smaller than the allocated unit, cause memory wast
 * 2 bits for segmentation, 12 bits for offset
 
 ```c
-1 // get top 2 bits of 14-bit VA
-2 Segment = (VirtualAddress & SEG_MASK) >> SEG_SHIFT
-3 // now get offset
-4 Offset = VirtualAddress & OFFSET_MASK
-5 if (Offset >= Bounds[Segment])
-6 	RaiseException(PROTECTION_FAULT)
-7 else
-8 	PhysAddr = Base[Segment] + Offset
-9 	Register = AccessMemory(PhysAddr)
+// get top 2 bits of 14-bit VA
+Segment = (VirtualAddress & SEG_MASK) >> SEG_SHIFT
+// now get offset
+Offset = VirtualAddress & OFFSET_MASK
+if (Offset >= Bounds[Segment])
+	RaiseException(PROTECTION_FAULT)
+else{
+  PhysAddr = Base[Segment] + Offset
+	Register = AccessMemory(PhysAddr)
+}	
 ```
 
 * 1 bit to indicate if "grows positive"
