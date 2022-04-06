@@ -557,7 +557,72 @@ Final Impelementation:
 
 Lampson and Redell use only 1 condition in producer/consumer problem, but they __wake up all__ sleeping threads to check which one is need. If a thread is not need, it go back to sleep imediately.
 
-### Seemaphores
+### Semaphores
 
 It's the single primitive for all things related to synchronization. We can use it as both locks and condtion varables. Invited by __Edsger Dijkstra__
+
+`sem_wait()` `sem_post()`make the process to sleep/waken
+
+```c
+1 #include <semaphore.h>
+2 sem_t s;
+3 sem_init(&s, 0, 1); 
+```
+
+Methods definition
+
+```c
+1 int sem_wait(sem_t *s) {
+2 decrement the value of semaphore s by one
+3 wait if value of semaphore s is negative
+4 }
+5
+6 int sem_post(sem_t *s) {
+7 increment the value of semaphore s by one
+8 if there are one or more threads waiting, wake one
+9 } 
+```
+
+
+
+#### Semaphore implement condition variable
+
+set semaphore initial value to be 1
+
+```c
+1 sem_t m;
+2 sem_init(&m, 0, X); // initialize semaphore to X; what should X be?
+3
+4 sem_wait(&m);
+5 // critical section here
+6 sem_post(&m); 
+```
+
+#### Semaphore implement condition variable
+
+set semaphore initial value to be 0
+
+```c
+1 sem_t s;
+2
+3 void *
+4 child(void *arg) {
+5 printf("child\n");
+6 sem_post(&s); // signal here: child is done
+7 return NULL;
+8 }
+9
+10 int
+11 main(int argc, char *argv[]) {
+12 sem_init(&s, 0, X); // what should X be?
+13 printf("parent: begin\n");
+14 pthread_t c;
+15 Pthread_create(c, NULL, child, NULL);
+16 sem_wait(&s); // wait here for child
+17 printf("parent: end\n");
+18 return 0;
+19 } 
+```
+
+#### Semaphore solve consumer/producer problem
 
