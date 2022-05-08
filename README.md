@@ -4,7 +4,7 @@ Author: Akiyama
 
 Create : 13 Feb, 2022
 
-Update: 25 Mar, 2022
+Update: 8 May, 2022
 
 # Visualization
 
@@ -583,8 +583,6 @@ Methods definition
 9 } 
 ```
 
-
-
 #### Semaphore implement condition variable
 
 set semaphore initial value to be 1
@@ -624,5 +622,114 @@ set semaphore initial value to be 0
 19 } 
 ```
 
-#### Semaphore solve consumer/producer problem
+# Persistence
 
+
+
+## I/O DEVICES
+
+### Polling
+
+```c
+While (STATUS == BUSY)
+ ; // wait until device is not busy
+Write data to DATA register
+Write command to COMMAND register
+ (Doing so starts the device and executes the command)
+While (STATUS == BUSY)
+ ; // wait until device is done with your request 
+```
+
+Simple but waste CPU time.
+
+### Interrupting
+
+Send a request to device, then make the process sleep. When device finished its internal operation, device through a hardware interrupt. OS will handle with _Interrupt Service Routine，ISR_ or _interrupt handler_.
+
+__However__, intterput is not always optimal, if you have a high-performance device that do data operation very fast. Interrupt will make it slow.
+
+### Hybrid
+
+Use __polling__ and __interrupt__: polling for a little while, if device stilling doing the data operation, then interrupt.
+
+### DMA（Direct Memory Access）
+
+Special device that help CPU to copy the device.
+
+### Methods of interacting to devices:
+
+* Special instruction: priviledge instruction that can only performed by OS
+* Memory-Mapped I/O, use memory and device as its address space
+
+### Device driver:
+
+* Provice abstraction, OS do not need how to operate device detail. The driver will do the detail
+
+* May contain more bugs, as the driver developers are generally not expert
+* Take a high percentage of OS size.
+
+## Hard Disks
+
+### Basis
+
+* Assure atomic write of 512 bytes
+* Performance follows space and temporal locality
+* Platter: covered with magnetic film
+* Surface: double sides of a Platter
+* Spindle: mutiple platters construct a spindle
+* RPM(Rorations Per Minute): spindle spins in 7200~15000RPM generally
+
+* Track: surfaces that divided into rings make a track
+* Cylinder: stack of tracks(across platters)
+* Disk head: change magnetic film
+* Disk arm: move disk head to the expected location
+
+### Extra
+
+* Track skew: sections are generally skewed(not aligned), to reduce rotation delay
+* Mutile-zoned: outer tracks contains more sections
+* Track buffer/Cache: 8/16MB
+
+### Calculation of I/O time
+
+T_I/O = T_seek + T_rorate + T_transfer
+
+
+
+### Disk Scheduling
+
+principle of SJF，shortest job first
+
+Implementation:
+
+* Shortest-Seek-Time-First, SSTF: simple and greedy
+
+* SCAN: prevent starving
+
+* Shortest Positioning Time First, SPTF: use physical layout of disk(consider rotation)
+
+
+
+## RAID
+
+### RAID-0
+
+* Full performance
+* Low reliability
+
+### RAID-1
+
+* Full performance on random read
+* Half performance on other 
+* Half capacity
+
+### RAID-4
+
+* Low performance(1 / 2) on random write
+* Almost full performance (N -1) on other
+* N - 1 capacity
+
+### RAID-5
+
+* Fine performance (N / 4) on random write
+* Other almost same like RAID-4
