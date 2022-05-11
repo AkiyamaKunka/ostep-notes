@@ -10,10 +10,6 @@ Update: 8 May, 2022
 
 First part of Operating System: The Three Easy Pieces
 
-## Process
-
-//TODO
-
 ## Scheduling
 
 ### Metric:
@@ -694,8 +690,6 @@ Special device that help CPU to copy the device.
 
 T_I/O = T_seek + T_rorate + T_transfer
 
-
-
 ### Disk Scheduling
 
 principle of SJF，shortest job first
@@ -708,9 +702,13 @@ Implementation:
 
 * Shortest Positioning Time First, SPTF: use physical layout of disk(consider rotation)
 
-
-
 ## RAID
+
+### Metric of RAID
+
+1. Reliability
+2. Performance
+3. Capacity
 
 ### RAID-0
 
@@ -733,3 +731,38 @@ Implementation:
 
 * Fine performance (N / 4) on random write
 * Other almost same like RAID-4
+
+## Directory and File
+
+### Hard Link
+
+2 filename in directory pointing to the same inode(which means a real file)
+
+### Symbolic Link
+
+Itself is a third type of file. Delete the source file may cause dangling reference
+
+## Fast File System
+
+### Policy:
+
+* Use `4KB` block size(increase data transforming efficiency)
+
+* Each `group` is organized like `VSFS`(Very Simple File System)
+
+* Place file data in the same `group`
+* Place files in the same directory together
+
+* The __Large-file Exception__ : 4MB data in `indirect block` will be placed in different `group`
+
+## FSCK and Journaling
+
+### fsck Tool
+
+a tool on Unix to check metadata consistency
+
+### Journaling
+
+* data journaling
+
+* metadata journaling
