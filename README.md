@@ -14,7 +14,7 @@ First part of Operating System: The Three Easy Pieces
 
 ### Metric:
 
-* $ T_{turnaround} = T_{complection} - T_{arrival} $
+* $T_{turnaround} = T_{complection} - T_{arrival}$
 * $T_{response}  = T_{firstrun} - T_{arrival}$
 
 ### FIFO (First In, First Out) / FCFS (First Come, First Serve)
